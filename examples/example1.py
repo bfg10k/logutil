@@ -1,5 +1,5 @@
 import os
-from logutil import init_logger, logger
+from logutil import init_logger, log
 
 api_key = os.environ["DATADOG_API_KEY"]
 
@@ -12,9 +12,9 @@ init_logger(
     },
 )
 
-logger.info("Hello", a=1, b=[10, 20, 30], c="foo")
+log.info("Hello", a=1, b=[10, 20, 30], c="foo")
 
 try:
     raise Exception("this is a test error")
 except Exception:
-    logger.traceback()
+    log.traceback()

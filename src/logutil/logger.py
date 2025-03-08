@@ -49,8 +49,8 @@ def init_logger(
     if datadog is not None:
         new_outputs.append(MessageQueue(DatadogHandler(datadog), 1))
 
-    logger.outputs = new_outputs
+    log.outputs = new_outputs
 
 
-logger = Logger()
+log = Logger()
 init_logger()
