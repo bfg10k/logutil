@@ -1,0 +1,19 @@
+[project]
+name = "logutil"
+version = "0.1.0"
+description = "A python logging library that writes to console, local file and datadog"
+readme = "README.md"
+authors = [
+    { name = "leizha", email = "8961794+leizha@users.noreply.github.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "requests",
+]
+
+[project.scripts]
+logging = "logging:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
