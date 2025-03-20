@@ -44,7 +44,7 @@ class DatadogHandler:
         self.endpoint = get_datadog_endpoint(config["site"])
         self.service = config["service"]
         self.hostname = os.uname().nodename
-        self.tags = format_tags(config["tags"])
+        self.tags = format_tags(config.get("tags"))
 
     def write_many(self, messages):
         items = []
