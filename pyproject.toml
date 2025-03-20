@@ -1,6 +1,6 @@
 [project]
 name = "bfg-logutil"
-version = "0.1.1"
+version = "0.1.2"
 description = "A python logging library that writes to console, local file and datadog"
 readme = "README.md"
 authors = [
