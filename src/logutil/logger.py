@@ -31,7 +31,7 @@ def logctx(**kwargs):
 def get_logctx():
     if not hasattr(localctx, "stack"):
         return {}
-    return localctx.stack[-1]
+    return {k: v for d in localctx.stack for k, v in d.items()}
 
 
 ##################
