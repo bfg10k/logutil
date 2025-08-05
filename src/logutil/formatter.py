@@ -1,7 +1,6 @@
 import json
 import re
 
-
 allowed_chars = re.compile(r"^[a-zA-Z0-9_\-\.@]+$")
 any_whitespace = re.compile(r"\s+")
 

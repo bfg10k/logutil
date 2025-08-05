@@ -1,12 +1,41 @@
+import threading
 import time
 import traceback
 from collections import namedtuple
+from contextlib import contextmanager
 
 from .console_handler import ConsoleHandler
 from .datadog_handler import DatadogConfig, DatadogHandler
 from .file_handler import FileHandler
 from .levels import LEVEL_ERROR, LEVEL_INFO, LEVEL_WARN
 from .message_queue import MessageQueue
+
+##################
+# logging context
+
+
+localctx = threading.local()
+
+
+@contextmanager
+def logctx(**kwargs):
+    if not hasattr(localctx, "stack"):
+        localctx.stack = []
+    localctx.stack.append(kwargs)
+    try:
+        yield
+    finally:
+        localctx.stack.pop()
+
+
+def get_logctx():
+    if not hasattr(localctx, "stack"):
+        return {}
+    return localctx.stack[-1]
+
+
+##################
+# logger
 
 Message = namedtuple("Message", ["timestamp", "level", "message", "params"])
 
@@ -16,16 +45,18 @@ class Logger:
         self.outputs = []
 
     def info(self, message, **kwargs):
-        self.add(Message(time.time(), LEVEL_INFO, message, kwargs))
+        self.add(Message(time.time(), LEVEL_INFO, message, get_logctx() | kwargs))
 
     def error(self, message, **kwargs):
-        self.add(Message(time.time(), LEVEL_ERROR, message, kwargs))
+        self.add(Message(time.time(), LEVEL_ERROR, message, get_logctx() | kwargs))
 
     def warn(self, message, **kwargs):
-        self.add(Message(time.time(), LEVEL_WARN, message, kwargs))
+        self.add(Message(time.time(), LEVEL_WARN, message, get_logctx() | kwargs))
 
     def traceback(self):
-        self.add(Message(time.time(), LEVEL_ERROR, traceback.format_exc(), None))
+        self.add(
+            Message(time.time(), LEVEL_ERROR, traceback.format_exc(), get_logctx())
+        )
 
     def add(self, message):
         for output in self.outputs:

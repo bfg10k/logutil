@@ -1,4 +1,5 @@
 import os
+
 from logutil import init_logger, log
 
 api_key = os.environ["DATADOG_API_KEY"]
