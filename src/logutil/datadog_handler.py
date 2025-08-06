@@ -16,7 +16,7 @@ DATADOG_SITES = {
 }
 
 
-class DatadogConfig(TypedDict):
+class DatadogConfig(TypedDict, total=False):
     api_key: str
     site: str
     service: str
